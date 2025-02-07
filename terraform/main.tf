@@ -10,7 +10,7 @@ terraform {
 
 # Configure the AWS Provider
 provider "aws" {
-  region = "us-east-1"
+  region = "us-west-2"
 }
 
 # VPC Creation
@@ -86,6 +86,6 @@ resource "aws_ecs_service" "my_service" {
 #  backend "s3" {
 #    bucket = "terraformbackendaccess"
 #    key    = "terraformbackendaccess.tfstate"
-#    region = "us-east-1"
+#    region = "us-west-2"
 # }
 #}
