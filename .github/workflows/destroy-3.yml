@@ -1,0 +1,53 @@
+name: "Destroy Terraform Environment"
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_destroy:
+        description: "Type 'yes' to confirm destruction of infrastructure"
+        required: true
+        default: "no"
+
+jobs:
+  Destroy_Infrastructure:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirm_destroy == 'yes'  # Ensures manual confirmation
+    env:
+      TF_BUCKET: "tfstatebucket2025"
+      TF_KEY: "tfstatebucket2025.tfstate"
+      TF_REGION: "us-west-2"
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          fetch-depth: 1  # Fetch only the latest commit for faster execution
+
+      - name: 🏗 Install Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.7  # Update to the latest stable Terraform version
+
+      - name: 🛠 Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/TerraformRole
+          aws-region: ${{ env.TF_REGION }}
+          audience: sts.amazonaws.com
+
+      - name: 🏗 Initialize Terraform
+        run: |
+          terraform init -reconfigure \
+            -backend-config="bucket=${TF_BUCKET}" \
+            -backend-config="key=${TF_KEY}" \
+            -backend-config="region=${TF_REGION}"
+        working-directory: terraform
+
+      - name: 🔥 Destroy Infrastructure
+        run: terraform destroy -auto-approve
+        working-directory: terraform
+
+      - name: ✅ Validate Cleanup
+        run: terraform state list || echo "Terraform state already deleted"
+        working-directory: terraform
