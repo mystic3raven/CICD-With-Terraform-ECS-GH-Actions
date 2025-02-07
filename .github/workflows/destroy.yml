@@ -21,6 +21,11 @@ jobs:
         with:
           ref: main
           fetch-depth: 1
+
+      - name: 🏗 Install Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+            terraform_version: 1.5.7  # Update to the latest stable Terraform version
           
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
