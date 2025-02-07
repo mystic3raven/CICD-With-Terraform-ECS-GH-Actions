@@ -12,8 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TF_BACKEND_CONFIG: |
-        bucket = "terraformbackendaccess"
-        key    = "terraformbackendaccess.tfstate"
+        bucket = "tfstatebucket2025"
+        key    = "tfstatebucket2025.tfstate"
         region = "us-west-2"
     steps:
       - name: Checkout code

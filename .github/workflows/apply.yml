@@ -26,8 +26,8 @@ jobs:
         uses: hashicorp/setup-terraform@v1
         with:
           backend-config: |
-            bucket = "terraformbackendaccess"
-            key    = "terraformbackendaccess.tfstate"
+            bucket = "tfstatebucket2025"
+            key    = "tfstatebucket2025.tfstate"
             region = "us-west-2"
           terraform_version: 1.4.2
       

@@ -82,10 +82,10 @@ resource "aws_ecs_service" "my_service" {
 }
 
 # Add Terraform Backend Service
-#terraform {
-#  backend "s3" {
-#    bucket = "terraformbackendaccess"
-#    key    = "terraformbackendaccess.tfstate"
-#    region = "us-west-2"
-# }
-#}
+terraform {
+ backend "s3" {
+  bucket = "tfstatebucket2025"
+  key    = "tfstatebucket2025.tfstate"
+  region = "us-west-2"
+ }
+}
